@@ -11,19 +11,31 @@ var city;
 
 //just working on search history to display as buttons here, under footer (class history)//
 var searchHistory = [];
+var displayHistory = [];
 var searchHistoryContainer = document.getElementById("history");
 
 function renderSearchHistory() {
   searchHistoryContainer.innerHTML = '';
-  for (var i = searchHistory.length - 1; i >= 0; i--) {
+  // for (var i = displayHistory.length - 1; i >= 0; i--) 
+  
   var btn = document.createElement("button");
   btn.setAttribute("type", "button");
   btn.classList.add("history-btn", "btn-history");
-  btn.setAttribute("data-search", searchHistory[i]);
-  btn.textContent = searchHistory[i];
+  btn.setAttribute("data-search", searchHistory);
+  btn.textContent = searchHistory;
   searchHistoryContainer.appendChild(btn);
-  
-}
+  displayHistory.push(searchHistory);
+
+  // for (var i = displayHistory.length; i >= 0; i++) {
+  //   searchHistoryContainer.appendChild(displayHistory[i]);
+  }
+// }
+
+
+function appendSearchHistory() {
+  for (var i = displayHistory.length; i = 0; i++) {
+    renderSearchHistory();
+  }
 }
 
 
@@ -35,6 +47,9 @@ function initSearchHistory() {
     searchHistory = storedHistory;
       console.log("initSearchHistory worked"
       );
+
+
+      
       renderSearchHistory();
   }
   
@@ -60,7 +75,6 @@ function getCity() {
     console.log(city);
     var cityDisplay = document.getElementById("result");
     cityDisplay.innerHTML = city;
-   
   }
   
   var submit = document.getElementById("submitBtn");
