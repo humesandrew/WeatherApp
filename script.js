@@ -5,19 +5,11 @@
 const apiResult = document.getElementById("apiResult");
 const futureResult = document.getElementById("apiFutureResult");
 const APIKey = "bb827de844a7d6fffd664986ca5222ea";
-var city; 
 
-
-
-//just working on search history to display as buttons here, under footer (class history)//
-var searchHistory = [];
-var displayHistory = [];
-var searchHistoryContainer = document.getElementById("history");
 
 function renderSearchHistory() {
+  for (var i = city.length - 1; i >= 0; i--)
   searchHistoryContainer.innerHTML = '';
-  // for (var i = displayHistory.length - 1; i >= 0; i--) 
-  
   var btn = document.createElement("button");
   btn.setAttribute("type", "button");
   btn.classList.add("history-btn", "btn-history");
@@ -25,6 +17,7 @@ function renderSearchHistory() {
   btn.textContent = searchHistory;
   searchHistoryContainer.appendChild(btn);
   displayHistory.push(searchHistory);
+  btn.addEventListener("click", resubmitCity);
 
   // for (var i = displayHistory.length; i >= 0; i++) {
   //   searchHistoryContainer.appendChild(displayHistory[i]);
@@ -36,6 +29,18 @@ function appendSearchHistory() {
   for (var i = displayHistory.length; i = 0; i++) {
     renderSearchHistory();
   }
+}
+
+function resubmitCity() {
+  event.preventDefault();
+  var searchResult = this.getAttribute("data-search");
+  
+ function changeCityInput() {
+  inputForm.value = searchResult;
+  
+ }
+ changeCityInput();
+ getAPI();
 }
 
 
@@ -61,9 +66,14 @@ function initSearchHistory() {
 
 
 
+var city = []; 
 
 
 
+//just working on search history to display as buttons here, under footer (class history)//
+var searchHistory = [];
+var displayHistory = [];
+var searchHistoryContainer = document.getElementById("history");
 
 
 
@@ -75,6 +85,7 @@ function getCity() {
     console.log(city);
     var cityDisplay = document.getElementById("result");
     cityDisplay.innerHTML = city;
+    
   }
   
   var submit = document.getElementById("submitBtn");
@@ -89,9 +100,13 @@ function getCity() {
 
 
 
+
+
+
+
 function getAPI() {
   var requestUrl =
-    "https://api.openweathermap.org/data/2.5/weather?q=Denver&units=imperial&appid=bb827de844a7d6fffd664986ca5222ea";
+    "https://api.openweathermap.org/data/2.5/weather?q=" + inputForm.value + "&units=imperial&appid=bb827de844a7d6fffd664986ca5222ea";
   fetch(requestUrl)
     .then(function (response) {
       return response.json();
@@ -99,9 +114,11 @@ function getAPI() {
 
     .then(function (data) {
       console.log(data);
-      // console.log(data.weather[0].description);
 
+        apiResult.textContent = '';
+      
       var apiIcon = document.createElement("li");
+      
       apiIcon.textContent = data.weather[0].icon;
 
       //then use apiIcon's code (03d) to input that into the html lookup for the icon on OpenWeather.org//
@@ -126,7 +143,8 @@ function getAPI() {
       var apiUV = document.createElement("li");
       apiUV.textContent = "Can't find UV index under API data";
       apiResult.appendChild(apiUV);
-     
+      
+    
     });
 }
 
