@@ -1,12 +1,11 @@
-// var APIKey = "bb827de844a7d6fffd664986ca5222ea";
-
-// var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
-
 const apiResult = document.getElementById("apiResult");
 const futureResult = document.getElementById("apiFutureResult");
 const APIKey = "bb827de844a7d6fffd664986ca5222ea";
 
 
+
+// creating buttons in the search history footer for each search result//
+// added click function to re-search for that city//
 function renderSearchHistory() {
   for (var i = city.length - 1; i >= 0; i--)
   searchHistoryContainer.innerHTML = '';
@@ -18,26 +17,22 @@ function renderSearchHistory() {
   searchHistoryContainer.appendChild(btn);
   displayHistory.push(searchHistory);
   btn.addEventListener("click", resubmitCity);
-
-  // for (var i = displayHistory.length; i >= 0; i++) {
-  //   searchHistoryContainer.appendChild(displayHistory[i]);
   }
-// }
 
 
 function appendSearchHistory() {
   for (var i = displayHistory.length; i = 0; i++) {
     renderSearchHistory();
   }
-}
+  }
 
+
+  // added function to re-submit based on clicking a particular history button//
 function resubmitCity() {
   event.preventDefault();
   var searchResult = this.getAttribute("data-search");
-  
  function changeCityInput() {
   inputForm.value = searchResult;
-  
  }
  changeCityInput();
  getAPI();
@@ -52,25 +47,11 @@ function initSearchHistory() {
     searchHistory = storedHistory;
       console.log("initSearchHistory worked"
       );
-
-
-      
       renderSearchHistory();
+  } 
   }
-  
-}
-
-// initSearchHistory();
-
-
-
-
 
 var city = []; 
-
-
-
-//just working on search history to display as buttons here, under footer (class history)//
 var searchHistory = [];
 var displayHistory = [];
 var searchHistoryContainer = document.getElementById("history");
@@ -78,32 +59,29 @@ var searchHistoryContainer = document.getElementById("history");
 
 
 
-
+// set local storage and display chose city for reference////////////////////////////////
 function getCity() {
     var city = document.getElementById("inputForm").value.trim();
     localStorage.setItem("City", city);
     console.log(city);
     var cityDisplay = document.getElementById("result");
     cityDisplay.innerHTML = city;
-    
   }
   
+  // made all functions run when you click submit. The functions display the city, get the API results for that city, and puts it in local storage////////////
   var submit = document.getElementById("submitBtn");
   submit.addEventListener("click", function () {
     getCity();
     getAPI();
     get5Day();
     initSearchHistory();
-    // get5DayAPI();//
   });
   
 
 
 
 
-
-
-
+// calls the API//
 function getAPI() {
   var requestUrl =
     "https://api.openweathermap.org/data/2.5/weather?q=" + inputForm.value + "&units=imperial&appid=bb827de844a7d6fffd664986ca5222ea";
@@ -117,6 +95,7 @@ function getAPI() {
 
         apiResult.textContent = '';
       
+        // creates an li for each category of weather requested.//
       var apiIcon = document.createElement("li");
       
       apiIcon.textContent = data.weather[0].icon;
@@ -129,79 +108,34 @@ function getAPI() {
       apiResult.appendChild(apiDescription);
 
       var apiTemp = document.createElement("li");
-      apiTemp.textContent = data.main.temp;
+      apiTemp.textContent = data.main.temp + " degrees";
       apiResult.appendChild(apiTemp);
 
       var apiHumidity = document.createElement("li");
-      apiHumidity.textContent = data.main.humidity;
+      apiHumidity.textContent = data.main.humidity + " relative humidity";
       apiResult.appendChild(apiHumidity);
 
       var apiWind = document.createElement("li");
-      apiWind.textContent = data.wind.speed;
+      apiWind.textContent = data.wind.speed + " mph windspeed";
       apiResult.appendChild(apiWind);
       
       var apiUV = document.createElement("li");
       apiUV.textContent = "Can't find UV index under API data";
       apiResult.appendChild(apiUV);
-      
-    
     });
-}
+    } 
 
-
+// gets the 5day results from the API//
   function get5Day() {
     var city = document.getElementById("inputForm").value.trim();
     console.log(city);
     var city5Day = document.getElementById("result2");
     city5Day.innerHTML = city;
-  }
+    }
 
 
 
-// function get5DayAPI() {
-//     var requestUrl = "https://api.openweathermap.org/data/2.5/forecast/daily?q=Denver&cnt=5&appid=464fc1b74edd3c4f575142ad8096fa53";
 
-//     fetch(requestUrl)
-//       .then(function (response) {
-//         return response.json();
-//       })
-  
-//       .then(function (data) {
-//         console.log(data);
-//         // console.log(data.weather[0].description);
-  
-//         var apiIcon = document.createElement("li");
-//         apiIcon.textContent = data.weather[0].icon;
-  
-//         //then use apiIcon's code (03d) to input that into the html lookup for the icon on OpenWeather.org//
-//         futureResult.appendChild(apiIcon);
-  
-//         var apiDescription = document.createElement("li");
-//         apiDescription.textContent = data.weather[0].description;
-//         futureResult.appendChild(apiDescription);
-  
-//         var apiTemp = document.createElement("li");
-//         apiTemp.textContent = data.main.temp;
-//         futureResult.appendChild(apiTemp);
-  
-//         var apiHumidity = document.createElement("li");
-//         apiHumidity.textContent = data.main.humidity;
-//         futureResult.appendChild(apiHumidity);
-  
-//         var apiWind = document.createElement("li");
-//         apiWind.textContent = data.wind.speed;
-//         futureResult.appendChild(apiWind);
-        
-//         var apiUV = document.createElement("li");
-//         apiUV.textContent = "Can't find UV index under API data";
-//         futureResult.appendChild(apiUV);
-       
-//       });
-//   }
-
- //maybe this is better to use moment to display date//
-      // var myDate = new Date(1638311431*1000);
-      // console.log(myDate.toLocaleString());
 
 
 
